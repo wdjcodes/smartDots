@@ -8,17 +8,15 @@ import java.util.List;
  */
 public class DisplayPanel extends JPanel {
 
-    public static int TARGET_DIAM = 10;
     private static int FONT_SIZE = 14;
-
+    private static final Font HUD_FONT = new Font("Arial", Font.BOLD, FONT_SIZE );
+    private static final Color HUD_FONT_COLOR = Color.BLACK;
+    private static final TextBox.textAlignment HUD_ALIGNMENT = TextBox.textAlignment.LEFT;
     private List <Dot> dots;
     private List <MapObject> mapObjects = new ArrayList<>(  );
-//    private int xTarget = 300;
-//    private int yTarget = TARGET_DIAM/2;
-//    private int xDraw = xTarget - TARGET_DIAM/2;
-//    private int yDraw = yTarget - TARGET_DIAM/2;
     private String gen = "Generation: 0";
     private String best = "Best: N/A";
+    private TextBox textBoxHUD;
 
     public DisplayPanel(List<MapObject> mapObjects){
         setPreferredSize( new Dimension( 600,600 ) );
@@ -28,15 +26,10 @@ public class DisplayPanel extends JPanel {
     public DisplayPanel( int x, int y, List<MapObject> mapObjects){
         setPreferredSize( new Dimension( x, y ) );
         this.mapObjects = mapObjects;
+        textBoxHUD = new TextBox( 0, 0, 300, 300 );
+        textBoxHUD.addDisplayString( new TextBox.DisplayString( gen, HUD_FONT, HUD_FONT_COLOR, HUD_ALIGNMENT ) );
+        textBoxHUD.addDisplayString( new TextBox.DisplayString( best, HUD_FONT, HUD_FONT_COLOR, HUD_ALIGNMENT ) );
     }
-
-//    public DisplayPanel( int x, int y, int xTarget, int yTarget){
-//        setPreferredSize( new Dimension( x, y ) );
-//        this.xTarget = xTarget;
-//        this.yTarget = yTarget;
-//        xDraw = this.xTarget - TARGET_DIAM/2;
-//        yDraw = this.yTarget - TARGET_DIAM/2;
-//    }
 
     @Override
     public void paintComponent(Graphics g){
@@ -48,16 +41,7 @@ public class DisplayPanel extends JPanel {
                 mapObjects.get( i ).draw( g );
             }
         }
-//        if(dots != null) {
-//            for ( int i = 1; i < dots.size(); i++ ) {
-//                dots.get( i ).draw( g );
-//            }
-//            dots.get(0).draw(g);
-//        }
-        g.setFont( new Font("Arial", Font.BOLD, FONT_SIZE ) );
-        g.setColor( Color.BLACK );
-        g.drawString( gen, 10, 10 );
-        g.drawString( best, 10, 20);
+        textBoxHUD.draw( g );
     }
 
     public void addDot(Dot d){
@@ -81,6 +65,12 @@ public class DisplayPanel extends JPanel {
         best = "Best: " + b;
     }
 
+    public void refreshHUD(){
+        textBoxHUD.clearDisplayStrings();
+        textBoxHUD.addDisplayString( new TextBox.DisplayString( gen, HUD_FONT, HUD_FONT_COLOR, HUD_ALIGNMENT ) );
+        textBoxHUD.addDisplayString( new TextBox.DisplayString( best, HUD_FONT, HUD_FONT_COLOR, HUD_ALIGNMENT ) );
+    }
+
     public void setMapObjects( List<? extends MapObject> o){
         mapObjects = (List<MapObject>)o;
     }
@@ -88,14 +78,4 @@ public class DisplayPanel extends JPanel {
     public void appendObjects(List<? extends MapObject> o){
         mapObjects.addAll(o);
     }
-
-//    public void clearObjectType(Class c){
-//        ArrayList<MapObject> newObjects = new ArrayList<>(  );
-//        for( int i = 0; i < mapObjects.size(); i++){
-//            if( mapObjects.get(i).getClass() != c){
-//                newObjects.add( mapObjects.get(i));
-//            }
-//        }
-//        mapObjects = newObjects;
-//    }
 }

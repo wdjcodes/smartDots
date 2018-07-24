@@ -124,6 +124,7 @@ public class SmartDots implements Runnable {
             obstacles.get( j ).restart();
         }
 
+        display.refreshHUD();
         display.repaint();
     }
 

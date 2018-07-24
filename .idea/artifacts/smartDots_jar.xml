@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="smartDots:jar">
+    <output-path>$PROJECT_DIR$/smartDots_jar</output-path>
+    <root id="archive" name="smartDots.jar">
+      <element id="module-output" name="smartDots" />
+    </root>
+  </artifact>
+</component>
